@@ -26,6 +26,7 @@ lazy val jsonDeps = Seq(
 ).map(a ⇒ a % "0.11.1")
 
 lazy val loggingDeps = Seq(
+  "com.typesafe.akka"          %% "akka-slf4j"     % akkaVersion,
   "ch.qos.logback"             % "logback-classic" % "1.2.3",
   "com.typesafe.scala-logging" %% "scala-logging"  % "3.9.2"
 )
@@ -37,13 +38,21 @@ lazy val testDeps = Seq(
   "org.scalatest"     %% "scalatest"           % "3.0.1"
 ).map(m ⇒ m % Test)
 
-lazy val sse_ingest = (project in file(".")).settings(
-  inThisBuild(
-    List(
-      organization := "io.epiphanous",
-      scalaVersion := "2.12.8"
-    )
-  ),
-  name := "sse-ingest",
-  libraryDependencies ++= akkaDeps ++ alpakkaDeps ++ kafkaDeps ++ kinesisDeps ++ jsonDeps ++ loggingDeps ++ testDeps
-)
+lazy val sse_ingest = (project in file("."))
+  .enablePlugins(BuildInfoPlugin)
+  .settings(
+    inThisBuild(
+      List(
+        organization := "io.epiphanous",
+        scalaVersion := "2.12.8"
+      )
+    ),
+    name := "sse-ingest",
+    version := "0.1.0",
+    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
+    buildInfoPackage := "io.epiphanous.sse2dlog",
+    libraryDependencies ++= akkaDeps ++ alpakkaDeps ++ kafkaDeps ++ kinesisDeps ++ jsonDeps ++ loggingDeps ++ testDeps,
+    test in assembly := {},
+    mainClass in assembly := Some("io.epiphanous.sse2dlog.Ingest"),
+    assemblyJarName in assembly := s"sse-ingest-${version.value}.jar"
+  )

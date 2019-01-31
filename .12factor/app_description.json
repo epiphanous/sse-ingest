@@ -1,0 +1,100 @@
+{
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "EVENT_SOURCE_NAME": {
+        "description": "Default name for topic/stream (default: test-events)",
+        "type": "string"
+      },
+      "EVENT_SOURCE_URL": {
+        "description": "The url of the event source (default: http://localhost:8000/events)",
+        "type": "string"
+      },
+      "EVENT_SOURCE_PAYLOAD_TYPE": {
+        "description": "Event type, in event source parlance (default: data)",
+        "type": "string"
+      },
+      "EVENT_SOURCE_PAYLOAD_ID": {
+        "description": "Top level key in the json event payload holding the event id (default: id)",
+        "type": "string"
+      },
+      "SINK_TYPE": {
+        "description": "The type of distributed log to push events into (kafka or kinesis) (default: kafka)",
+        "type": "string"
+      },
+      "KAFKA_TOPIC": {
+        "description": "Name of kafka topic to write to if using kafka (default: ${EVENT_SOURCE_NAME})",
+        "type": "string"
+      },
+      "KAFKA_BOOTSTRAP_SERVERS": {
+        "description": "Bootstrap servers/ports for kafka (comma-separated for multiple) (default: localhost:9092)",
+        "type": "string"
+      },
+      "KINESIS_REGION": {
+        "description": "The AWS region for the kinesis endpoint (default: us-east-1)",
+        "type": "string"
+      },
+      "KINESIS_ENDPOINT": {
+        "description": "The kinesis endpoint (default: https://kinesis.${KINESIS_REGION}.aws.amazon.com)",
+        "type": "string"
+      },
+      "KINESIS_STREAM": {
+        "description": "Name of kinesis stream to write to (default: ${EVENT_SOURCE_NAME})",
+        "type": "string"
+      },
+      "KINESIS_FLOW_PARALLELISM": {
+        "description": "Number of (parallel) kinesis producers (default: 1)",
+        "type": "string"
+      },
+      "KINESIS_FLOW_MAX_BATCH_SIZE": {
+        "description": "Max number of records to batch (default: 500)",
+        "type": "string"
+      },
+      "KINESIS_FLOW_MAX_RECORDS_PER_SECOND": {
+        "description": "Max records written per sec (default: 1000)",
+        "type": "string"
+      },
+      "KINESIS_FLOW_MAX_BYTES_PER_SECOND": {
+        "description": "Max bytes written per sec (default: 1000000)",
+        "type": "string"
+      },
+      "KINESIS_FLOW_MAX_RETRIES": {
+        "description": "Max retries after recoverable errors (default: 5)",
+        "type": "string"
+      },
+      "KINESIS_FLOW_BACKOFF_STRATEGY": {
+        "description": "Backoff strategy on retries (exponential or linear) (default: exponential)",
+        "type": "string"
+      },
+      "KINESIS_FLOW_RETRY_INITIAL_TIMEOUT": {
+        "description": "Initial delay between retries (in milliseconds) (default: 100)",
+        "type": "string"
+      }
+    }
+  },
+
+  "deploy_env": {
+    "cmd_release": [
+      "echo released"
+    ],
+    "processes": {
+      "web": "java -jar app.jar"
+    },
+    "listening_ports": {
+      "web": [ 8080 ]
+    },
+    "health_checks": {
+      "web": {
+        "protocol": "http",
+        "path": "/app_status"
+      }
+    },
+    "external_port": {
+      "web": 443
+    },
+    "max_ram": {
+      "web" : 2048
+    },
+    "deploy_tasks": ["web"]
+  }
+}

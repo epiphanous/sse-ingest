@@ -8,7 +8,9 @@
         </encoder>
     </appender>
 
-    <logger name="org.apache.kafka" level="ERROR"/>
+    <variable name="KAFKA_LOG_LEVEL" value="${KAFKA_LOG_LEVEL:-WARN}"/>
+
+    <logger name="org.apache.kafka" level="${KAFKA_LOG_LEVEL}"/>
 
     <root>
         <appender-ref ref="STDOUT" />
