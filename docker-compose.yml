@@ -79,7 +79,7 @@ services:
   ingest:
     build:
       context: .
-      dockerfile: ./.12factor/Dockerfile
+      dockerfile: ./.build/Dockerfile
     image: epiphanous/sse-ingest:${SSE_INGEST_VERSION}
     hostname: ingest
     env_file:
