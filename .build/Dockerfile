@@ -1,7 +1,7 @@
 # BUILD STAGE 1
 # ---------------------------------------------------
 FROM hseeberger/scala-sbt:8u181_2.12.8_1.2.8 as builder
-MAINTAINER "Robert Lyons" <rlyons@mdsol.com>, <nextdude@gmail.com>
+MAINTAINER "Robert Lyons" <nextdude@epiphanous.io>
 
 RUN useradd -c "App User" -m -s /usr/sbin/nologin -U app
 
@@ -14,8 +14,6 @@ WORKDIR /home/app/build
 RUN sbt assembly
 
 # ---------------------------------------------------
-
-
 # BUILD STAGE 2 - copy build artifacts into fresh runtime image
 # ---------------------------------------------------
 FROM openjdk:8-jre-alpine as runtime
